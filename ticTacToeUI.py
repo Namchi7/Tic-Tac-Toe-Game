@@ -2,12 +2,12 @@ import tkinter as tk
 from tkinter import DISABLED, messagebox
 
 
-xState = [0, 0, 0, 0, 0, 0, 0, 0, 0]        # List to note the positions on which X is marked
-zState = [0, 0, 0, 0, 0, 0, 0, 0, 0]        # List to note the positions on which O is marked
-turn = 1                                    # Keep track of turns, 1 for X and 0 for O
+xState = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+zState = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+turn = 1  # 1 for X and 0 for O
 
 
-def disableAllBtn():                        # Function to disable all buttons once the game is over
+def disableAllBtn():
     b1.config(state=DISABLED)
     b2.config(state=DISABLED)
     b3.config(state=DISABLED)
@@ -19,45 +19,44 @@ def disableAllBtn():                        # Function to disable all buttons on
     b9.config(state=DISABLED)
 
 
-def checkWin(xState, zState):               # Function to check the winner
+def checkWin(xState, zState):               # to check the winner
 
     wins = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6],
             [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
 
     for win in wins:
         if((xState[win[0]] + xState[win[1]] + xState[win[2]]) == 3):
-            messagebox.showinfo("Result", "X Wins!!!")              # Declares the winner
+            messagebox.showinfo("Result", "X Wins!!!")
             disableAllBtn()
             return 1
 
         if((zState[win[0]] + zState[win[1]] + zState[win[2]]) == 3):
-            messagebox.showinfo("Result", "O Wins!!!")              # Declares the winner
+            messagebox.showinfo("Result", "O Wins!!!")
             disableAllBtn()
             return 0
 
-    #Loop to check if the game is finished
     sum = 0
 
     for i in range(9):
         sum += (xState[i] + zState[i])
 
-        if sum == 9:                        # If sum = 9, means all the places are occupied and the game is over
+        if sum == 9:
             disableAllBtn()
             return -1
 
 
-def b_click(b, value):                      # Function to check turn and update values on the UI
+def b_click(b, value):
     global xState, zState, turn
 
     if turn == 1 and b["text"] == " ":
-        b["text"] = "X"                     # Updates the text on UI as "X"
-        xState[(value - 1)] = 1             # Updates the xState List value
-        b.config(state=DISABLED)            # Disable the button
+        b["text"] = "X"
+        xState[(value - 1)] = 1
+        b.config(state=DISABLED)
 
     else:
-        b["text"] = "O"                     # Updates the text on UI as "O"
-        zState[(value - 1)] = 1             # Updates the zState List value
-        b.config(state=DISABLED)            # Disable the button
+        b["text"] = "O"
+        zState[(value - 1)] = 1
+        b.config(state=DISABLED)
 
     cwin = checkWin(xState, zState)
     if(cwin == -1):
@@ -72,14 +71,13 @@ root = tk.Tk()
 root.title("Tic Tac Toe")
 
 
-def cleanStart():                           # Function to start and reset the game
+def cleanStart():
     global b1, b2, b3, b4, b5, b6, b7, b8, b9
     global xState, zState, turn
-    xState = [0, 0, 0, 0, 0, 0, 0, 0, 0]    # List to note the positions on which X is marked
-    zState = [0, 0, 0, 0, 0, 0, 0, 0, 0]    # List to note the positions on which O is marked
-    turn = 1                                # Keep track of turns, 1 for X and 0 for O
+    xState = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    zState = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    turn = 1  # 1 for X and 0 for O
 
-    # Creating buttons for UI
     b1 = tk.Button(root, text=" ", font=(
         "Calibri", 20), height=3, width=8, bg="SystemButtonFace", command=lambda: b_click(b1, 1))
     b2 = tk.Button(root, text=" ", font=(
@@ -113,10 +111,8 @@ def cleanStart():                           # Function to start and reset the ga
     b8.grid(row=2, column=1)
     b9.grid(row=2, column=2)
 
-    messagebox.showinfo("Start", "X starts first")      # Displays the messagebox with title Start and content: X starts first
+    messagebox.showinfo("Start", "X starts first")
 
-
-# Creating the menu and dropdown options for menu
 
 gameMenu = tk.Menu(root)
 root.config(menu=gameMenu)
@@ -125,6 +121,6 @@ menuOptions = tk.Menu(gameMenu, tearoff=False)
 gameMenu.add_cascade(label="Options", menu=menuOptions)
 menuOptions.add_command(label="Reset Game", command=cleanStart)
 
-cleanStart()                        # Function for a fresh start of the game
+cleanStart()
 
 root.mainloop()
